@@ -1,0 +1,127 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
+class Node<T> {
+    T data;
+    Node<T> next;
+    
+    public Node(T data) {
+        this.data = data;
+    }
+}
+
+public class Runner {
+    
+    static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    
+    public static Node<Integer> takeInput() throws IOException {
+        Node<Integer> head = null, tail = null;
+
+        String[] datas = br.readLine().trim().split("\\s");
+
+        int i = 0;
+        while(i < datas.length && !datas[i].equals("-1")) {
+            int data = Integer.parseInt(datas[i]);
+            Node<Integer> newNode = new Node<Integer>(data);
+            if(head == null) {
+                head = newNode;
+                tail = newNode;
+            }
+            else {
+                tail.next = newNode;
+                tail = newNode;
+            }
+            i += 1;
+        }
+
+        return head;
+    }
+    
+    public static void print(Node<Integer> head){
+        while(head != null) {
+            System.out.print(head.data + " ");
+            head = head.next;
+        }
+        
+        System.out.println();
+    }
+    
+    public static void main(String[] args) throws NumberFormatException, IOException {
+        
+        int t = Integer.parseInt(br.readLine().trim());
+
+        while (t > 0) {
+            
+            Node<Integer> head = takeInput();
+            String[] m_n = br.readLine().trim().split("\\s");
+
+            int m = Integer.parseInt(m_n[0]);
+            int n = Integer.parseInt(m_n[1]);
+
+            Node<Integer> newHead = skipMdeleteN(head, m, n);
+            print(newHead);
+            
+            t -= 1;
+        }
+
+    }
+   public static int count(LinkedListNode<Integer>head)
+    {
+        int z=0;
+        while(head!=null)
+        {
+            head=head.next;
+            z++;
+        }
+        return z;
+    }
+	
+	public static LinkedListNode<Integer> skipMdeleteN(LinkedListNode<Integer> head, int M, int N) {
+		if(head==null)
+        {
+            return head;
+        }
+        if(M==0)
+        {
+            return null;
+        } 
+        if(N==0)
+        {
+            return head;
+        }
+        int k=count(head);
+        int y=0;
+         LinkedListNode<Integer>temp=head;
+        while(temp.next!=null)
+        {
+        int count=1;
+        while(temp!=null&&count<M)
+        {
+            temp=temp.next;
+            count++;
+        }
+        int c=0;
+        LinkedListNode<Integer>temp1=temp;
+        while(temp!=null&&c<=N)
+        {
+            c++;
+            temp=temp.next;
+        }
+        if(temp!=null)
+        {
+        temp1.next=temp;
+        }
+        else{
+            temp1.next=null;
+            return head;
+        }
+        y=y+M+N;
+        if(k<y)
+        {
+        temp=temp.next;
+        }
+        }
+        return head;
+	}
+}
