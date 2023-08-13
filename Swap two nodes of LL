@@ -1,0 +1,156 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
+class Node<T> {
+    T data;
+    Node<T> next;
+    
+    public Node(T data) {
+        this.data = data;
+    }
+}
+
+public class Runner {
+    
+    static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    
+    public static Node<Integer> takeInput() throws IOException {
+        Node<Integer> head = null, tail = null;
+
+        String[] datas = br.readLine().trim().split("\\s");
+
+        int i = 0;
+        while(i < datas.length && !datas[i].equals("-1")) {
+            int data = Integer.parseInt(datas[i]);
+            Node<Integer> newNode = new Node<Integer>(data);
+            if(head == null) {
+                head = newNode;
+                tail = newNode;
+            }
+            else {
+                tail.next = newNode;
+                tail = newNode;
+            }
+            i += 1;
+        }
+
+        return head;
+    }
+    
+    public static void print(Node<Integer> head){
+        while(head != null) {
+            System.out.print(head.data + " ");
+            head = head.next;
+        }
+        
+        System.out.println();
+    }
+    
+    public static void main(String[] args) throws NumberFormatException, IOException {
+        
+        int t = Integer.parseInt(br.readLine().trim());
+
+        while (t > 0) {
+            
+            Node<Integer> head = takeInput();
+            String[] i_j = br.readLine().trim().split("\\s");
+
+            int i = Integer.parseInt(i_j[0]);
+            int j = Integer.parseInt(i_j[1]);
+
+            Node<Integer> newHead = swapNodes(head, i, j);
+            print(newHead);
+            
+            t -= 1;
+        }
+
+    }
+
+    public static int count(LinkedListNode<Integer> head)
+    {
+        int a=0;
+        while(head!=null)
+        {
+            a++;
+            head=head.next;
+        }
+        return a;
+    }
+
+	public static LinkedListNode<Integer> swapNodes(LinkedListNode<Integer> head, int i, int j) {
+        if(i==j)
+        {
+            return head;
+        }
+        int cou=count(head);
+        if(i>cou ||j>cou)
+        {
+            return null;
+        }
+        LinkedListNode<Integer>imp=head,imp1=head,newhead=null,remp=null;
+        if(i==0||j==0)
+        {
+            int k;
+            if(i==0)
+            {
+                k=j;
+            }
+            else 
+            {
+                k=i;
+            }
+             int count2=0;
+        while(imp!=null&&count2<k-1)
+        {
+            imp=imp.next;
+            count2++;
+        }
+        newhead=imp.next;
+        remp=newhead.next;
+        newhead.next=imp1.next;
+        imp.next=imp1;
+       imp1.next=remp;
+        return newhead;
+        }
+        LinkedListNode<Integer>temp=head,temp1=head,t1=null,t2=null,emp=null;
+    
+        int count=0;
+		while(temp!=null&&count<i-1)
+        {
+            temp=temp.next;
+            count++;
+        }
+        t1=temp.next;
+        int count1=0;
+        while(temp1!=null&&count1<j-1)
+        {
+            temp1=temp1.next;
+            count1++;
+        }
+        t2=temp1.next;
+        if(i<j)
+        {
+      emp=temp.next.next;
+        temp.next=t2;
+        temp1.next=t1;
+        t1.next=t2.next;
+        if(emp!=temp1&&j-i!=1)
+        t2.next=emp;
+        else
+        t2.next=temp1;
+        }
+        else if(i>j)
+        {
+            emp=temp1.next.next;
+            temp.next=t2;
+            temp1.next=t1;
+            t2.next=t1.next;
+            if(emp!=temp&&i-j!=1)
+            t1.next=emp;
+            else
+            t1.next=temp;
+        }
+        return head;
+	}
+}
