@@ -1,0 +1,90 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
+class Node<T> {
+    T data;
+    Node<T> next;
+    
+    public Node(T data) {
+        this.data = data;
+    }
+}
+
+public class Runner {
+    
+    static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    
+    public static Node<Integer> takeInput() throws IOException {
+        Node<Integer> head = null, tail = null;
+
+        String[] datas = br.readLine().trim().split("\\s");
+
+        int i = 0;
+        while(i < datas.length && !datas[i].equals("-1")) {
+            int data = Integer.parseInt(datas[i]);
+            Node<Integer> newNode = new Node<Integer>(data);
+            if(head == null) {
+                head = newNode;
+                tail = newNode;
+            }
+            else {
+                tail.next = newNode;
+                tail = newNode;
+            }
+            i += 1;
+        }
+
+        return head;
+    }
+    
+    public static void print(Node<Integer> head){
+        while(head != null) {
+            System.out.print(head.data + " ");
+            head = head.next;
+        }
+        
+        System.out.println();
+    }
+    
+    public static void main(String[] args) throws NumberFormatException, IOException {
+        int t = Integer.parseInt(br.readLine().trim());
+
+        while (t > 0) {
+
+            Node<Integer> head = takeInput(); 
+            Solution.printReverse(head);
+            System.out.println();
+            
+            t -= 1;
+
+        }
+        
+    }
+public static void printReverse(LinkedListNode<Integer> root) {
+      LinkedListNode<Integer> slow = root, fast = root, prev, temp;
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        prev = slow;
+        slow = slow.next;
+        prev.next = null;
+        while (slow != null) {
+            temp = slow.next;
+            slow.next = prev;
+            prev = slow;
+            slow = temp;
+        }
+        fast = root;
+        slow = prev;
+        while (slow != null) {
+            if (fast.data != slow.data)
+			System.out.print("False");
+            fast = fast.next;
+            slow = slow.next;
+        }
+        System.out.print("True");
+	}
+
+}
